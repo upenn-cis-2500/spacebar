@@ -12,14 +12,16 @@ jobs:
     - uses: actions/checkout@v4
     - uses: cachix/install-nix-action@v30
       with:
+        # Gitea runs this job in a container without a service manager. Keep
+        # Nix in the job container instead of relying on a separate daemon.
+        install_options: --no-daemon
         nix_path: nixpkgs=channel:nixos-unstable
-        # Gitea Actions runs each job inside Docker; the nested Nix sandbox
-        # cannot load its seccomp filter in that environment.
         extra_nix_config: |
-          sandbox = false
+          sandbox = true
     #- uses: DeterminateSystems/magic-nix-cache-action@v13
     # Keep the single x86 runner below its memory limit; the default parallel
     # build can be OOM-killed while compiling the server closure.
-    - run: nix build -L -j 1
-    - run: nix develop --command echo OK
-    - run: nix flake check -vL -j 1
+    - run: nix --option sandbox true show-config | grep '^sandbox'
+    - run: nix --option sandbox true build -L -j 1
+    - run: nix --option sandbox true develop --command echo OK
+    - run: nix --option sandbox true flake check -vL -j 1
