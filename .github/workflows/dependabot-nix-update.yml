@@ -39,3 +39,6 @@ jobs:
           else
             echo "Npm dependencies hash was not changed"
           fi
+concurrency:
+  group: agent-p-${{ github.repository }}-fab6444a7fe60556-${{ github.ref }}
+  cancel-in-progress: true

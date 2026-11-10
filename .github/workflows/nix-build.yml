@@ -25,3 +25,6 @@ jobs:
     - run: nix --option sandbox true build -L -j 1
     - run: nix --option sandbox true develop --command echo OK
     - run: nix --option sandbox true flake check -vL -j 1
+concurrency:
+  group: agent-p-${{ github.repository }}-684a713c1cb57ac8-${{ github.ref }}
+  cancel-in-progress: true
