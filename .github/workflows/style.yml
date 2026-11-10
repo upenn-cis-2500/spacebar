@@ -26,3 +26,6 @@ jobs:
     - run: npm i --only=dev
     - run: npx eslint .
     - run: npx prettier --check .
+concurrency:
+  group: agent-p-${{ github.repository }}-0c9224ae51df3f33-${{ github.ref }}
+  cancel-in-progress: true

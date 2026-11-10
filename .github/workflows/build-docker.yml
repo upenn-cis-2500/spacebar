@@ -51,3 +51,6 @@ jobs:
          IMAGE_ID=$(docker images spacebar-server-ts$SUFFIX --format '{{.ID}}')
          docker tag $IMAGE_ID ghcr.io/$REPO$SUFFIX:latest
          docker push ghcr.io/$REPO$SUFFIX:latest
+concurrency:
+  group: agent-p-${{ github.repository }}-1d203d2dfb96ccf9-${{ github.ref }}
+  cancel-in-progress: true
